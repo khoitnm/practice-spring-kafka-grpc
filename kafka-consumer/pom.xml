@@ -15,7 +15,6 @@
         <groupId>org.tnmk.skeleton</groupId>
         <artifactId>practice-spring-kafka-grpc</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <dependencies>
