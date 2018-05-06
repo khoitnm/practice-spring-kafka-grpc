@@ -24,23 +24,19 @@ public class FooListenerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-//    @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-//        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-//        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, new ProtobufDeserializer<Foo>().getClass());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return props;
     }
 
-//    @Bean
-    public ConsumerFactory<String, Foo> consumerFactory() {
+    private ConsumerFactory<String, Foo> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(), new ProtobufDeserializer<>(Foo.class));
     }
 
-    @Bean
+    @Bean("fooKafkaContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Foo> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Foo> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

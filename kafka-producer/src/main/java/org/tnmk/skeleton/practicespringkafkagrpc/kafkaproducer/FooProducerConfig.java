@@ -1,5 +1,6 @@
 package org.tnmk.skeleton.practicespringkafkagrpc.kafkaproducer;
 
+import com.google.protobuf.GeneratedMessageV3;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class FooSenderConfig {
+public class FooProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
@@ -24,18 +25,16 @@ public class FooSenderConfig {
     public Map<String, Object> producerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ProtobufSerializer.class);
         return props;
     }
 
     @Bean
-    public ProducerFactory<String, Foo> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    public <T extends GeneratedMessageV3> ProducerFactory<String, T> producerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfigs(), new StringSerializer(), new ProtobufSerializer<>());
     }
 
     @Bean
-    public KafkaTemplate<String, Foo> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public  <T extends GeneratedMessageV3> KafkaTemplate<String, T> kafkaTemplate() {
+        return new KafkaTemplate<> (producerFactory());
     }
 }

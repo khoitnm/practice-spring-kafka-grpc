@@ -1,5 +1,6 @@
 package org.tnmk.skeleton.practicespringkafkagrpc.kafkaproducer;
 
+import com.google.protobuf.GeneratedMessageV3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,12 @@ import org.springframework.stereotype.Service;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
 
 @Service
-public class FooSender {
+public class FooProducerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FooSender.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FooProducerService.class);
 
     @Autowired
-    private KafkaTemplate<String, Foo> kafkaTemplate;
+    private KafkaTemplate<String, GeneratedMessageV3> kafkaTemplate;
 
     @Value("${app.topic.example}")
     private String topic;
@@ -25,11 +26,6 @@ public class FooSender {
     public void send(Foo data){
         LOG.info("sending data='{}' to topic='{}'", data, topic);
 
-        Message<Foo> message = MessageBuilder
-                .withPayload(data)
-                .setHeader(KafkaHeaders.TOPIC, topic)
-                .build();
-
-        kafkaTemplate.send(message);
+        kafkaTemplate.send(topic, data);
     }
 }
