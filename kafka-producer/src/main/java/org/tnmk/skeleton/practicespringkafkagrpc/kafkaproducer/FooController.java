@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
+import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.FooOrBuilder;
 
 @RestController
 public class FooController {
@@ -19,6 +20,7 @@ public class FooController {
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public void sendRequest(){
         LOG.info("Send message: ");
-        fooSender.send(new Foo("SAMPLE", "SAMPLE DESCRIPTION"));
+        Foo foo = Foo.newBuilder().setName("Sample Name").setDescription("Sample Description").build();
+        fooSender.send(foo);
     }
 }
