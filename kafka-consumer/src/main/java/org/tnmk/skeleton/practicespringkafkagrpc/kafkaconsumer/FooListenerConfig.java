@@ -1,46 +1,30 @@
 package org.tnmk.skeleton.practicespringkafkagrpc.kafkaconsumer;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
-import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.serialization.protobuf.ProtobufDeserializer;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsumerProperties;
+import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsumerContainerFactoryBuilder;
 
 @Configuration
 @EnableKafka
 public class FooListenerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
+    @Configuration
+    @ConfigurationProperties(prefix = "kafka-consumer")
+    public static class ConsumerProperties extends KafkaConsumerProperties{}
 
-    public Map<String, Object> consumerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        return props;
-    }
-
-    private ConsumerFactory<String, Foo> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(), new ProtobufDeserializer<>(Foo.class));
-    }
+    @Autowired
+    private KafkaConsumerProperties kafkaConsumerProperties;
 
     @Bean("fooKafkaContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Foo> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Foo> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
+        KafkaConsumerContainerFactoryBuilder kafkaConsumerContainerFactoryBuilder = new KafkaConsumerContainerFactoryBuilder(kafkaConsumerProperties);
+        return kafkaConsumerContainerFactoryBuilder.protobufConcurrentConsumerContainerFactory(Foo.class);
     }
 
 }

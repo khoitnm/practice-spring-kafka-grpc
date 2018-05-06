@@ -23,7 +23,7 @@ public class FooListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(FooListener.class);
 
-    @KafkaListener(topics = "${app.topic.example}", containerFactory = "fooKafkaContainerFactory")
+    @KafkaListener(id = "group01", topics = "${app.topic.example}", containerFactory = "fooKafkaContainerFactory")
     public void receive(@Payload Foo data, @Headers MessageHeaders headers) {
         LOG.info("received data='{}'", data);
 

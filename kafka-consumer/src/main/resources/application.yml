@@ -1,11 +1,15 @@
 server.port: 8081
-spring:
-  kafka:
-    bootstrap-servers: localhost:9092
+#spring:
+#  kafka:
+#    bootstrap-servers: localhost:9092
+kafka-consumer:
+  bootstrap-servers: localhost:9092
+  auto-offset-reset: earliest
+
 
 app:
   topic:
-    example: example.t
+    example: topic.01
 
 logging:
   level:
