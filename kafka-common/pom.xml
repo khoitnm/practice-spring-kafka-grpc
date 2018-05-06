@@ -123,7 +123,8 @@
                                     <directory>target/generated-sources/protobuf</directory>
                                 </resource>
                             </resources>
-                            <outputDirectory/>
+                            <!-- The output is not really important but this is the mandatory field! -->
+                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
