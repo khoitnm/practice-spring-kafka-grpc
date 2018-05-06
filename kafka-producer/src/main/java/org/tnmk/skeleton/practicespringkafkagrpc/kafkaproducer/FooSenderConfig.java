@@ -9,14 +9,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class SenderConfig {
+public class FooSenderConfig {
 
-    @Value("${kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean
@@ -25,22 +27,16 @@ public class SenderConfig {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-
         return props;
     }
 
     @Bean
-    public ProducerFactory<String, Car> producerFactory() {
+    public ProducerFactory<String, Foo> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Car> kafkaTemplate() {
+    public KafkaTemplate<String, Foo> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
-    }
-
-    @Bean
-    public Sender sender() {
-        return new Sender();
     }
 }
