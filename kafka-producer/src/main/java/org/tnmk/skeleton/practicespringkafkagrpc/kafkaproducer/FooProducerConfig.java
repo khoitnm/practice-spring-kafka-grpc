@@ -23,6 +23,6 @@ public class FooProducerConfig {
     @Bean
     public  <T extends GeneratedMessageV3> KafkaTemplate<String, T> kafkaTemplate() {
         KafkaProducerTemplateFactory<T> kafkaProducerTemplateFactory = new KafkaProducerTemplateFactory<>(producerProperties);
-        return kafkaProducerTemplateFactory.protobufKafkaTemplate();
+        return kafkaProducerTemplateFactory.createProtobufKafkaTemplate();
     }
 }

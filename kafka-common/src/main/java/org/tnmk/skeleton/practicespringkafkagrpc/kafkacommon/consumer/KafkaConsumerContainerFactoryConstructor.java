@@ -5,7 +5,10 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.core.*;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.ErrorHandler;
+import org.springframework.retry.RecoveryCallback;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -26,9 +29,11 @@ public class KafkaConsumerContainerFactoryConstructor<T extends GeneratedMessage
         this.kafkaConsumerProperties = kafkaConsumerProperties;
     }
 
-    public ConcurrentKafkaListenerContainerFactory<String, T> protobufConcurrentConsumerContainerFactory(Class<T> messagePayloadType) {
+
+
+    public ConcurrentKafkaListenerContainerFactory<String, T> createProtobufConcurrentConsumerContainerFactory(Class<T> messagePayloadType) {
         ConcurrentKafkaListenerContainerFactory<String, T> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
-        ConsumerFactory<String, T> consumerFactory = protobufConsumerFactory(kafkaConsumerProperties, messagePayloadType);
+        ConsumerFactory<String, T> consumerFactory = createProtobufConsumerFactory(kafkaConsumerProperties, messagePayloadType);
 
         containerFactory.setConsumerFactory(consumerFactory);
 
@@ -39,7 +44,19 @@ public class KafkaConsumerContainerFactoryConstructor<T extends GeneratedMessage
         return containerFactory;
     }
 
-    private Map<String, Object> consumerConfigs(KafkaConsumerProperties kafkaProperties) {
+    public void applyErrorHandler(ConcurrentKafkaListenerContainerFactory<String, T> listenerContainerFactory, ErrorHandler errorHandler) {
+        if (errorHandler != null) {
+            listenerContainerFactory.getContainerProperties().setErrorHandler(errorHandler);
+        }
+    }
+
+    public <R> void applyRecoveryCallback(ConcurrentKafkaListenerContainerFactory<String, T> listenerContainerFactory, RecoveryCallback<R> recoveryCallback) {
+        if (recoveryCallback != null) {
+            listenerContainerFactory.setRecoveryCallback(recoveryCallback);
+        }
+    }
+
+    private Map<String, Object> createConsumerConfigs(KafkaConsumerProperties kafkaProperties) {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaProperties.getAutoOffsetReset());
@@ -51,8 +68,8 @@ public class KafkaConsumerContainerFactoryConstructor<T extends GeneratedMessage
         return props;
     }
 
-    private ConsumerFactory<String, T> protobufConsumerFactory(KafkaConsumerProperties kafkaProperties, Class<T> messagePayloadType) {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs(kafkaProperties), new StringDeserializer(), new ProtobufDeserializer<>(messagePayloadType));
+    private ConsumerFactory<String, T> createProtobufConsumerFactory(KafkaConsumerProperties kafkaProperties, Class<T> messagePayloadType) {
+        return new DefaultKafkaConsumerFactory<>(createConsumerConfigs(kafkaProperties), new StringDeserializer(), new ProtobufDeserializer<>(messagePayloadType));
     }
 
     private void applyRetryConfiguration(ConcurrentKafkaListenerContainerFactory<?, ?> factory, KafkaConsumerProperties kafkaProperties) {

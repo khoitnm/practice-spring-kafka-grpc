@@ -18,17 +18,17 @@ public class KafkaProducerTemplateFactory<T extends GeneratedMessageV3> {
         this.kafkaProperties = kafkaProperties;
     }
 
-    public KafkaTemplate<String, T> protobufKafkaTemplate(){
-        return new KafkaTemplate<>(producerFactory(kafkaProperties));
+    public KafkaTemplate<String, T> createProtobufKafkaTemplate(){
+        return new KafkaTemplate<>(createProducerFactory(kafkaProperties));
     }
 
-    private Map<String, Object> producerConfigs(KafkaProducerProperties kafkaProperties) {
+    private Map<String, Object> createProducerConfigs(KafkaProducerProperties kafkaProperties) {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         return props;
     }
 
-    private ProducerFactory<String, T> producerFactory(KafkaProducerProperties kafkaProperties) {
-        return new DefaultKafkaProducerFactory<>(producerConfigs(kafkaProperties), new StringSerializer(), new ProtobufSerializer<>());
+    private ProducerFactory<String, T> createProducerFactory(KafkaProducerProperties kafkaProperties) {
+        return new DefaultKafkaProducerFactory<>(createProducerConfigs(kafkaProperties), new StringSerializer(), new ProtobufSerializer<>());
     }
 }

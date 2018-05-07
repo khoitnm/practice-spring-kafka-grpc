@@ -1,6 +1,5 @@
 package org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer;
 
-import org.apache.kafka.common.serialization.Deserializer;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.ErrorHandler;
 import org.springframework.kafka.listener.config.ContainerProperties;
@@ -8,12 +7,10 @@ import org.springframework.retry.RecoveryCallback;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * The properties inside here could be reused for different topics, consumer groups and messageType.
  * So there will be no specific topics and consumers information here.
+ * This file provides a convenient mapping with properties configuration in *.yml file.
  */
 public class KafkaConsumerProperties {
     private String bootstrapServers;
@@ -54,18 +51,18 @@ public class KafkaConsumerProperties {
     private int sessionTimeout = 30000;
 
     /**
-     * View more at {@link RetryTemplate}
+     * The total number retrying before giving up.
+     * View more at {@link RetryTemplate}.
      */
     private int retryAttempt = 5;
 
     /**
-     * View more at {@link FixedBackOffPolicy}
+     * This is the period between retrying.
+     * View more at {@link FixedBackOffPolicy}.
      */
     private long retryBackoffPeriod = 3000L;
 
-    private RecoveryCallback recoveryCallback;
 
-    private ErrorHandler errorHandler;
 
     public String getBootstrapServers() {
         return bootstrapServers;
@@ -138,22 +135,6 @@ public class KafkaConsumerProperties {
 
     public void setRetryBackoffPeriod(long retryBackoffPeriod) {
         this.retryBackoffPeriod = retryBackoffPeriod;
-    }
-
-    public RecoveryCallback getRecoveryCallback() {
-        return recoveryCallback;
-    }
-
-    public void setRecoveryCallback(RecoveryCallback recoveryCallback) {
-        this.recoveryCallback = recoveryCallback;
-    }
-
-    public ErrorHandler getErrorHandler() {
-        return errorHandler;
-    }
-
-    public void setErrorHandler(ErrorHandler errorHandler) {
-        this.errorHandler = errorHandler;
     }
 
     public String getInitialOffset() {

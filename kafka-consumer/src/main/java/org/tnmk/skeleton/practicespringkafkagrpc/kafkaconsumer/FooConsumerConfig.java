@@ -12,7 +12,7 @@ import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsu
 
 @Configuration
 @EnableKafka
-public class FooListenerConfig {
+public class FooConsumerConfig {
 
     @Configuration
     @ConfigurationProperties(prefix = "kafka-consumer")
@@ -24,7 +24,7 @@ public class FooListenerConfig {
     @Bean("fooKafkaContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Foo> kafkaListenerContainerFactory() {
         KafkaConsumerContainerFactoryConstructor kafkaConsumerContainerFactoryConstructor = new KafkaConsumerContainerFactoryConstructor(kafkaConsumerProperties);
-        return kafkaConsumerContainerFactoryConstructor.protobufConcurrentConsumerContainerFactory(Foo.class);
+        return kafkaConsumerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Foo.class);
     }
 
 }

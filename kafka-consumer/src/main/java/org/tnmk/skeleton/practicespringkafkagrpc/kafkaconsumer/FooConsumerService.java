@@ -7,21 +7,12 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Service;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
 
 @Service
-public class FooListener {
+public class FooConsumerService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FooListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FooConsumerService.class);
 
     @KafkaListener(id = "group01", topics = "${app.topic.example}", containerFactory = "fooKafkaContainerFactory")
     public void receive(@Payload Foo data, @Headers MessageHeaders headers) {

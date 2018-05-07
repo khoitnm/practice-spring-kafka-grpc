@@ -6,6 +6,14 @@ kafka-consumer:
   bootstrap-servers: localhost:9092
   auto-offset-reset: earliest
 
+  #ms
+  request-timeout: 60000
+
+  #ms
+  session-timeout: 30000
+
+  retry-attempt: 3
+  retry-backoff-period: 3000
 
 app:
   topic:
