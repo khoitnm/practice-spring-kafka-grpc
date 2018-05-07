@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.Foo;
 import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsumerProperties;
-import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsumerContainerFactoryBuilder;
+import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.consumer.KafkaConsumerContainerFactoryConstructor;
 
 @Configuration
 @EnableKafka
@@ -23,8 +23,8 @@ public class FooListenerConfig {
 
     @Bean("fooKafkaContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Foo> kafkaListenerContainerFactory() {
-        KafkaConsumerContainerFactoryBuilder kafkaConsumerContainerFactoryBuilder = new KafkaConsumerContainerFactoryBuilder(kafkaConsumerProperties);
-        return kafkaConsumerContainerFactoryBuilder.protobufConcurrentConsumerContainerFactory(Foo.class);
+        KafkaConsumerContainerFactoryConstructor kafkaConsumerContainerFactoryConstructor = new KafkaConsumerContainerFactoryConstructor(kafkaConsumerProperties);
+        return kafkaConsumerContainerFactoryConstructor.protobufConcurrentConsumerContainerFactory(Foo.class);
     }
 
 }

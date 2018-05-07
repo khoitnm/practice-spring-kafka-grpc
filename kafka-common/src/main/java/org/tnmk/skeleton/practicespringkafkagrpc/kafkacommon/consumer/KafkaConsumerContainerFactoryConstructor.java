@@ -4,6 +4,7 @@ import com.google.protobuf.GeneratedMessageV3;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
@@ -13,10 +14,15 @@ import org.tnmk.skeleton.practicespringkafkagrpc.kafkacommon.serialization.proto
 import java.util.HashMap;
 import java.util.Map;
 
-public class KafkaConsumerContainerFactoryBuilder<T extends GeneratedMessageV3> {
+/**
+ * This class is actually a Factory of the {@link KafkaListenerContainerFactory}
+ * But either the name ConsumerContainerFactoryFactory or KafkaListenerContainerFactoryFactory would be very confusing, so I use the name ConsumerContainerFactoryConstructor.
+ * @param <T> All the Kafka messages will extends from {@link GeneratedMessageV3}.
+ */
+public class KafkaConsumerContainerFactoryConstructor<T extends GeneratedMessageV3> {
     private KafkaConsumerProperties kafkaConsumerProperties;
 
-    public KafkaConsumerContainerFactoryBuilder(KafkaConsumerProperties kafkaConsumerProperties) {
+    public KafkaConsumerContainerFactoryConstructor(KafkaConsumerProperties kafkaConsumerProperties) {
         this.kafkaConsumerProperties = kafkaConsumerProperties;
     }
 
