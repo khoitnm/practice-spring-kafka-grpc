@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.leonardo.monalisa.common.message.protobuf";
+
+message Person {
+    string realName = 1;
+    string nickName = 2;
+}

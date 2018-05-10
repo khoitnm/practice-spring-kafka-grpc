@@ -1,0 +1,1 @@
+This package is just an emulation to show you how to implement a KafkaConsumer in your project.
