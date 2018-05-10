@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.tnmk.common.kafka.serialization.protobuf.DeserializerMessage;
 
 /**
  * For some reason, the manual acknowledge doesn't work???
@@ -29,7 +30,8 @@ public class PersonManualAckListener {
     @KafkaListener(id = "personManualAckListener", groupId = "personManualAckGroup", topics = "${app.topic.example}",
             containerFactory = "personManualAckListenerContainerFactory",
             errorHandler = "personManualAckListenerErrorHandler")
-    public void receive(@Payload Person data, @Headers MessageHeaders headers, Acknowledgment acknowledgment) {
+    public void receive(@Payload DeserializerMessage<Person> message, @Headers MessageHeaders headers, Acknowledgment acknowledgment) {
+        Person data = message.getData();
         logReceiveData(data, headers);
         if (StringUtils.isEmpty(data.getRealName())) {
             //We do this to test the Error Handler
@@ -39,10 +41,7 @@ public class PersonManualAckListener {
         }
         // Note: Even if the don't call acknowledge(), the Listener still continue processing the next item. It doesn't stuck here.
         // However, when we restart the application, it will replay old records which are not acknowledged yet.
-        Long offset = (Long)headers.get(KafkaHeaders.OFFSET);
-//        if (offset == 115){
-            acknowledgment.acknowledge();
-//        }
+        acknowledgment.acknowledge();
     }
 
     private void logReceiveData(Person data, MessageHeaders headers) {

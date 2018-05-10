@@ -1,13 +1,13 @@
 package org.tnmk.common.kafka.serialization.protobuf;
 
 import com.google.protobuf.GeneratedMessageV3;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Parser;
 import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
-import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.ExtendedDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,7 +18,9 @@ import java.util.Map;
  *
  * @param <T> The Protocol Buffer message type.
  */
-public class ProtobufDeserializer<T extends GeneratedMessageV3> implements ExtendedDeserializer<T> {
+public class ProtobufDeserializer<T extends GeneratedMessageV3> implements ExtendedDeserializer<DeserializerMessage<T>> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProtobufDeserializer.class);
+
     protected static final String PARSER_GETTER_METHOD_NAME = "parser";
 
     protected Parser<T> parser;
@@ -55,19 +57,25 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Exten
     }
 
     @Override
-    public T deserialize(String topic, byte[] data) {
+    public DeserializerMessage<T> deserialize(String topic, byte[] data) {
+        DeserializerMessage<T> result = new DeserializerMessage<>();
+        result.setOriginalBytes(data);
         try {
-//            throw new RuntimeException("Some runtime here.");
-            //The error here will cause infinite loop for Consumer.
-//            data = new byte[]{1};
-            T result = parser.parseFrom(data);
-            Person person = (Person)result;
+            T deseralizedData = parser.parseFrom(data);
+            Person person = (Person) deseralizedData;
             if (person.getRealName().contains("DeErr")){
-                throw new RuntimeException("Deserialize error intentionally");
+                throw new RuntimeException("Deserialization Error Intently");
             }
+
+            result.setData(deseralizedData);
+
+        } catch (Exception e) {
+            //We would like to catch all kind of exception here, because even only one exception could cause endless loop in Consumer.
+            //View more in {@link KafkaGlobalContainerErrorHandler}
+            result.setException(e);
+            LOGGER.error("[Protobuf Serialization] Cannot parse byte[] data to object in topic '{}': {}", topic, e.getMessage(), e);
+        } finally {
             return result;
-        } catch (InvalidProtocolBufferException e) {
-            throw new SerializationException(String.format("[Protobuf Serialization] Cannot parse byte[] data to object in topic '%s': %s", topic, e.getMessage()), e);
         }
     }
 
@@ -77,11 +85,9 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Exten
     }
 
     @Override
-    public T deserialize(String topic, Headers headers, byte[] data) {
-        try {
-            return deserialize(topic, data);
-        } catch (Exception e) {
-            throw e;
-        }
+    public DeserializerMessage<T> deserialize(String topic, Headers headers, byte[] data) {
+        DeserializerMessage<T> result = deserialize(topic, data);
+        result.setHeaders(headers);
+        return result;
     }
 }

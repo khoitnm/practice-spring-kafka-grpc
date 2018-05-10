@@ -61,7 +61,7 @@ public class KafkaGlobalContainerErrorHandler implements ContainerAwareErrorHand
     private void advanceToNextRecord(Consumer consumer){
         Set<TopicPartition> assignment = consumer.assignment();
         // Each consumer only handles one partition for each topic, so it looks OK.
-        // We may not need to worry about handling records in partitions which are not error.
+        // We may not need to worry about handling records in non-error partitions.
         assignment.forEach(topicPartition -> {
             advanceToNextRecord(consumer, topicPartition);
         });

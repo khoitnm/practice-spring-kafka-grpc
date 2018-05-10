@@ -1,8 +1,6 @@
 package org.tnmk.common.kafka.consumer;
 
 import com.google.protobuf.GeneratedMessageV3;
-import org.tnmk.common.kafka.KafkaConnectibleProperties;
-import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -15,6 +13,9 @@ import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.StringUtils;
+import org.tnmk.common.kafka.KafkaConnectibleProperties;
+import org.tnmk.common.kafka.serialization.protobuf.DeserializerMessage;
+import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +35,9 @@ public class KafkaListenerContainerFactoryConstructor<T extends GeneratedMessage
     }
 
 
-    public ConcurrentKafkaListenerContainerFactory<String, T> createProtobufConcurrentConsumerContainerFactory(Class<T> messagePayloadType) {
-        ConcurrentKafkaListenerContainerFactory<String, T> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
-        ConsumerFactory<String, T> consumerFactory = createProtobufConsumerFactory(kafkaListenerContainerProperties, messagePayloadType);
+    public ConcurrentKafkaListenerContainerFactory<String, DeserializerMessage<T>> createProtobufConcurrentConsumerContainerFactory(Class<T> messagePayloadType) {
+        ConcurrentKafkaListenerContainerFactory<String, DeserializerMessage<T>> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConsumerFactory<String, DeserializerMessage<T>> consumerFactory = createProtobufConsumerFactory(kafkaListenerContainerProperties, messagePayloadType);
 
         containerFactory.setConsumerFactory(consumerFactory);
         containerFactory.setAutoStartup(kafkaListenerContainerProperties.isAutoStartup());
@@ -80,7 +81,7 @@ public class KafkaListenerContainerFactoryConstructor<T extends GeneratedMessage
         return props;
     }
 
-    private ConsumerFactory<String, T> createProtobufConsumerFactory(KafkaListenerContainerProperties kafkaProperties, Class<T> messagePayloadType) {
+    private ConsumerFactory<String, DeserializerMessage<T>> createProtobufConsumerFactory(KafkaListenerContainerProperties kafkaProperties, Class<T> messagePayloadType) {
         return new DefaultKafkaConsumerFactory<>(
                 createConsumerConfigs(kafkaProperties),
                 new StringDeserializer(),
