@@ -1,13 +1,13 @@
 package org.tnmk.kafka.sampleapp.person.consumer;
 
-import org.tnmk.common.kafka.consumer.KafkaListenerContainerFactoryConstructor;
-import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
 import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.tnmk.common.kafka.consumer.KafkaListenerContainerFactoryConstructor;
+import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
 
 @Configuration
 @EnableKafka //@EnableKafka is used to enable detection of @KafkaListener annotation.
@@ -40,23 +40,16 @@ public class PersonConsumerConfig {
     @Bean("personAutoAckListenerContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Person> personAutoAckListenerContainerFactory() {
         KafkaListenerContainerFactoryConstructor kafkaListenerContainerFactoryConstructor = new KafkaListenerContainerFactoryConstructor(personAutoAckListenerProperties);
-        ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory = kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
-        kafkaListenerContainerFactoryConstructor.applyErrorHandler(concurrentKafkaListenerContainerFactory, personGlobalContainerErrorHandler);
-        return concurrentKafkaListenerContainerFactory;
+        return kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
     }
 
     //MANUAL ACKNOWLEDGE LISTENER /////////////////////////////////////////////////////////////////////////////
-    @Autowired
-    private PersonGlobalContainerErrorHandler personGlobalContainerErrorHandler;
-
     @Autowired
     private PersonManualAckListenerProperties personManualAckListenerProperties;
 
     @Bean("personManualAckListenerContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Person> personManualAckListenerContainerFactory() {
         KafkaListenerContainerFactoryConstructor kafkaListenerContainerFactoryConstructor = new KafkaListenerContainerFactoryConstructor(personManualAckListenerProperties);
-        ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory = kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
-        kafkaListenerContainerFactoryConstructor.applyErrorHandler(concurrentKafkaListenerContainerFactory, personGlobalContainerErrorHandler);
-        return concurrentKafkaListenerContainerFactory;
+        return kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
     }
 }
