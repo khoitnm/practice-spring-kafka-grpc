@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @return
  * @see SeekToCurrentErrorHandler
  */
-@Component("personStopWhenExceptionErrorHandler")
+@Component("personManualAckListenerErrorHandler")
 public class PersonManualAckListenerErrorHandler implements ConsumerAwareListenerErrorHandler {
     public static Logger LOGGER = LoggerFactory.getLogger(PersonConsumerConfig.class);
 

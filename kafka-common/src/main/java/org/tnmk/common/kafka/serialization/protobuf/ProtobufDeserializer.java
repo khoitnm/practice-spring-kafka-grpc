@@ -3,8 +3,11 @@ package org.tnmk.common.kafka.serialization.protobuf;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Parser;
+import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.apache.kafka.common.errors.SerializationException;
+import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.serialization.ExtendedDeserializer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,10 +16,9 @@ import java.util.Map;
 /**
  * Deserializer for a Protocol Buffer message payload.
  *
- *
  * @param <T> The Protocol Buffer message type.
  */
-public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Deserializer<T> {
+public class ProtobufDeserializer<T extends GeneratedMessageV3> implements ExtendedDeserializer<T> {
     protected static final String PARSER_GETTER_METHOD_NAME = "parser";
 
     protected Parser<T> parser;
@@ -27,20 +29,21 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Deser
      * </br>
      * If I can find a way to initiate that parser independently, then we don't need the messageType anymore.
      * And then this deserializer could be work with any message type.
+     *
      * @param messageType
      */
     public ProtobufDeserializer(Class<T> messageType) {
         parser = getParserFromMessageType(messageType);
     }
 
-    private Parser<T> getParserFromMessageType(Class<T> messageType){
+    private Parser<T> getParserFromMessageType(Class<T> messageType) {
         if (messageType == null) {
             throw new SerializationException("Protocol Buffer message type cannot be null");
         }
 
         try {
             Method method = messageType.getMethod(PARSER_GETTER_METHOD_NAME);
-            return (Parser<T>)method.invoke(null);
+            return (Parser<T>) method.invoke(null);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new SerializationException("Failed to find Protocol Buffer parser for [" + messageType.getCanonicalName() + "]", e);
         }
@@ -56,8 +59,13 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Deser
         try {
 //            throw new RuntimeException("Some runtime here.");
             //The error here will cause infinite loop for Consumer.
-            data= new byte[] {1};
-            return parser.parseFrom(data);
+//            data = new byte[]{1};
+            T result = parser.parseFrom(data);
+            Person person = (Person)result;
+            if (person.getRealName().contains("DeErr")){
+                throw new RuntimeException("Deserialize error intentionally");
+            }
+            return result;
         } catch (InvalidProtocolBufferException e) {
             throw new SerializationException(String.format("[Protobuf Serialization] Cannot parse byte[] data to object in topic '%s': %s", topic, e.getMessage()), e);
         }
@@ -66,5 +74,14 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Deser
     @Override
     public void close() {
         //Unused
+    }
+
+    @Override
+    public T deserialize(String topic, Headers headers, byte[] data) {
+        try {
+            return deserialize(topic, data);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

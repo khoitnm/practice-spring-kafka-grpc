@@ -8,16 +8,17 @@ person-auto-commit-consumer:
   auto-offset-reset: earliest
   request-timeout: 60000
   session-timeout: 30000
+  ack-on-error: true
   # Retry Attempt must be > 0
   # If the retry-attempt > 1, the error handler will be only executed after all retry attempt.
   # But we also want to test the error handler, so I set retry-attempt is 1.
-  retry-attempt: 1
+  retry-attempt: 2
   retry-backoff-period: 3000
 
 person-manual-commit-consumer:
   auto-commit: false
   auto-commit-interval: 3000
-  ack-on-error: false
+  ack-on-error: true
   ack-mode: MANUAL
   session-timeout: 25000
   retry-attempt: 1

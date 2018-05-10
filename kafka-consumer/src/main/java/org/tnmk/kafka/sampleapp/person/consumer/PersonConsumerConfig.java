@@ -40,12 +40,14 @@ public class PersonConsumerConfig {
     @Bean("personAutoAckListenerContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, Person> personAutoAckListenerContainerFactory() {
         KafkaListenerContainerFactoryConstructor kafkaListenerContainerFactoryConstructor = new KafkaListenerContainerFactoryConstructor(personAutoAckListenerProperties);
-        return kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
+        ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory = kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
+        kafkaListenerContainerFactoryConstructor.applyErrorHandler(concurrentKafkaListenerContainerFactory, personGlobalContainerErrorHandler);
+        return concurrentKafkaListenerContainerFactory;
     }
 
     //MANUAL ACKNOWLEDGE LISTENER /////////////////////////////////////////////////////////////////////////////
     @Autowired
-    private PersonManualAckListenerContainerErrorHandler personManualAckListenerContainerErrorHandler;
+    private PersonGlobalContainerErrorHandler personGlobalContainerErrorHandler;
 
     @Autowired
     private PersonManualAckListenerProperties personManualAckListenerProperties;
@@ -54,7 +56,7 @@ public class PersonConsumerConfig {
     public ConcurrentKafkaListenerContainerFactory<String, Person> personManualAckListenerContainerFactory() {
         KafkaListenerContainerFactoryConstructor kafkaListenerContainerFactoryConstructor = new KafkaListenerContainerFactoryConstructor(personManualAckListenerProperties);
         ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory = kafkaListenerContainerFactoryConstructor.createProtobufConcurrentConsumerContainerFactory(Person.class);
-        kafkaListenerContainerFactoryConstructor.applyErrorHandler(concurrentKafkaListenerContainerFactory, personManualAckListenerContainerErrorHandler);
+        kafkaListenerContainerFactoryConstructor.applyErrorHandler(concurrentKafkaListenerContainerFactory, personGlobalContainerErrorHandler);
         return concurrentKafkaListenerContainerFactory;
     }
 }

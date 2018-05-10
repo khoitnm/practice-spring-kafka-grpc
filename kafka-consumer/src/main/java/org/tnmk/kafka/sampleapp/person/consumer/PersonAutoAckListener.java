@@ -4,13 +4,15 @@ import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-//@Service
+@Service
 public class PersonAutoAckListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonAutoAckListener.class);
@@ -18,8 +20,8 @@ public class PersonAutoAckListener {
     @Autowired
     private PersonActionsAcknowledgement personActionsAcknowledgement;
 
-//    @KafkaListener(id = "personAutoAckListener",groupId = "personAutoAckGroup", topics = "${app.topic.example}",
-//            containerFactory = "personAutoAckListenerContainerFactory", errorHandler = "personErrorHandler")
+    @KafkaListener(id = "personAutoAckListener",groupId = "personAutoAckGroup", topics = "${app.topic.example}",
+            containerFactory = "personAutoAckListenerContainerFactory", errorHandler = "personErrorHandler")
     public void receive(@Payload Person data, @Headers MessageHeaders headers) {
         logReceiveData(data, headers);
         if (StringUtils.isEmpty(data.getRealName())) {

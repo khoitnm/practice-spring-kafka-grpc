@@ -28,7 +28,7 @@ public class PersonManualAckListener {
     //Note: this groupId is different from PersonAutoAckListener
     @KafkaListener(id = "personManualAckListener", groupId = "personManualAckGroup", topics = "${app.topic.example}",
             containerFactory = "personManualAckListenerContainerFactory",
-            errorHandler = "personStopWhenExceptionErrorHandler")
+            errorHandler = "personManualAckListenerErrorHandler")
     public void receive(@Payload Person data, @Headers MessageHeaders headers, Acknowledgment acknowledgment) {
         logReceiveData(data, headers);
         if (StringUtils.isEmpty(data.getRealName())) {
