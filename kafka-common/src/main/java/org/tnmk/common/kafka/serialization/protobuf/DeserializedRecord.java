@@ -10,7 +10,7 @@ import org.apache.kafka.common.header.Headers;
  * However, I think it will give use more convenient way to handle CorruptedDeserialization.
  * @param <T>
  */
-public class DeserializerMessage<T> {
+public class DeserializedRecord<T> {
     private Headers headers;
     private byte[] originalBytes;
     /**

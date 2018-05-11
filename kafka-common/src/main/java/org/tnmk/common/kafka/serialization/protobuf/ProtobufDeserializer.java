@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @param <T> The Protocol Buffer message type.
  */
-public class ProtobufDeserializer<T extends GeneratedMessageV3> implements ExtendedDeserializer<DeserializerMessage<T>> {
+public class ProtobufDeserializer<T extends GeneratedMessageV3> implements ExtendedDeserializer<DeserializedRecord<T>> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProtobufDeserializer.class);
 
     protected static final String PARSER_GETTER_METHOD_NAME = "parser";
@@ -57,8 +57,8 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Exten
     }
 
     @Override
-    public DeserializerMessage<T> deserialize(String topic, byte[] data) {
-        DeserializerMessage<T> result = new DeserializerMessage<>();
+    public DeserializedRecord<T> deserialize(String topic, byte[] data) {
+        DeserializedRecord<T> result = new DeserializedRecord<>();
         result.setOriginalBytes(data);
         try {
             T deseralizedData = parser.parseFrom(data);
@@ -85,8 +85,8 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Exten
     }
 
     @Override
-    public DeserializerMessage<T> deserialize(String topic, Headers headers, byte[] data) {
-        DeserializerMessage<T> result = deserialize(topic, data);
+    public DeserializedRecord<T> deserialize(String topic, Headers headers, byte[] data) {
+        DeserializedRecord<T> result = deserialize(topic, data);
         result.setHeaders(headers);
         return result;
     }

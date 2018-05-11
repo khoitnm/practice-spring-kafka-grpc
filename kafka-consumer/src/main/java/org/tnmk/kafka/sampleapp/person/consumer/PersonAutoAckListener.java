@@ -11,7 +11,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.tnmk.common.kafka.serialization.protobuf.DeserializerMessage;
+import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
 
 @Service
 public class PersonAutoAckListener {
@@ -23,7 +23,7 @@ public class PersonAutoAckListener {
 
     @KafkaListener(id = "personAutoAckListener",groupId = "personAutoAckGroup", topics = "${app.topic.example}",
             containerFactory = "personAutoAckListenerContainerFactory", errorHandler = "personErrorHandler")
-    public void receive(@Payload DeserializerMessage<Person> message, @Headers MessageHeaders headers) {
+    public void receive(@Payload DeserializedRecord<Person> message, @Headers MessageHeaders headers) {
         Person data = message.getData();
         logReceiveData(data, headers);
         if (StringUtils.isEmpty(data.getRealName())) {

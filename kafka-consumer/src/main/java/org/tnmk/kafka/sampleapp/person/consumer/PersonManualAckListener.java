@@ -12,7 +12,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.tnmk.common.kafka.serialization.protobuf.DeserializerMessage;
+import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
 
 /**
  * For some reason, the manual acknowledge doesn't work???
@@ -30,7 +30,7 @@ public class PersonManualAckListener {
     @KafkaListener(id = "personManualAckListener", groupId = "personManualAckGroup", topics = "${app.topic.example}",
             containerFactory = "personManualAckListenerContainerFactory",
             errorHandler = "personManualAckListenerErrorHandler")
-    public void receive(@Payload DeserializerMessage<Person> message, @Headers MessageHeaders headers, Acknowledgment acknowledgment) {
+    public void receive(@Payload DeserializedRecord<Person> message, @Headers MessageHeaders headers, Acknowledgment acknowledgment) {
         Person data = message.getData();
         logReceiveData(data, headers);
         if (StringUtils.isEmpty(data.getRealName())) {
