@@ -43,7 +43,8 @@ public class KafkaListenerContainerFactoryConstructor<T extends GeneratedMessage
         containerFactory.setAutoStartup(kafkaListenerContainerProperties.isAutoStartup());
         containerFactory.getContainerProperties().setAckMode(kafkaListenerContainerProperties.getAckMode());
         containerFactory.getContainerProperties().setAckOnError(kafkaListenerContainerProperties.isAckOnError());
-        containerFactory.setRecordFilterStrategy(new KafkaAdvanceErrorRecordFilterStrategy<>());
+        //We set it as a default filter strategy. Client code is always able to replace it by another filter strategy if necessary.
+        containerFactory.setRecordFilterStrategy(new KafkaIgnoreErrorRecordFilterStrategy<>());
 
         applyRetryConfiguration(containerFactory, kafkaListenerContainerProperties);
 

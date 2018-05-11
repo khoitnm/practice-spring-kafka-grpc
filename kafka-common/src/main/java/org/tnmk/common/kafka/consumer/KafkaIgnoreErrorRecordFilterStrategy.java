@@ -11,12 +11,17 @@ import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
  * They will be ignore and the consumer will continue consume next records.
  * However, ignored error records are not committed.
  * It means that the next time the consumer restarted, it could replay those error records (if the committed offset still lower than the error offset).
+ *
  * @param <K>
  * @param <V>
  */
-public class KafkaAdvanceErrorRecordFilterStrategy<K, V> implements RecordFilterStrategy<K, DeserializedRecord<V>> {
-    public static final Logger LOGGER = LoggerFactory.getLogger(KafkaAdvanceErrorRecordFilterStrategy.class);
+public class KafkaIgnoreErrorRecordFilterStrategy<K, V> implements RecordFilterStrategy<K, DeserializedRecord<V>> {
+    public static final Logger LOGGER = LoggerFactory.getLogger(KafkaIgnoreErrorRecordFilterStrategy.class);
 
+    /**
+     * @param consumerRecord
+     * @return true: ignore the record. false: the record will be delivered to listener (it's a little bit weird!)
+     */
     @Override
     public boolean filter(ConsumerRecord<K, DeserializedRecord<V>> consumerRecord) {
         DeserializedRecord<V> deserializedRecord = consumerRecord.value();
