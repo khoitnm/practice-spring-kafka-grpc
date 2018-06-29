@@ -63,6 +63,7 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Exten
         try {
             T deseralizedData = parser.parseFrom(data);
             Person person = (Person) deseralizedData;
+            //FIXME Just used to test the error case inside the Deserialization.
             if (person.getRealName().contains("DeErr")){
                 throw new RuntimeException("Deserialization Error Intently");
             }

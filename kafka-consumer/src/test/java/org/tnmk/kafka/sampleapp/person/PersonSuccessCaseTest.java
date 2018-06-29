@@ -3,21 +3,13 @@ package org.tnmk.kafka.sampleapp.person;
 import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.tnmk.kafka.sampleapp.PubSubTestApplication;
 import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleService;
 import org.tnmk.kafka.sampleapp.person.producer.PersonProducer;
 
-@ActiveProfiles("pubsubtest")
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PubSubTestApplication.class})
-public class PersonSimpleTest {
+public class PersonSuccessCaseTest extends BaseKafkaTest {
     @ClassRule
     public static final KafkaEmbedded EMBEDDED_KAFKA = new KafkaEmbedded(1, true, 1);
     private static final long TEST_CONSUMER_TIMEOUT = 1000;
