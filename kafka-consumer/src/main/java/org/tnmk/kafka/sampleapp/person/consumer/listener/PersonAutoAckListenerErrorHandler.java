@@ -1,4 +1,4 @@
-package org.tnmk.kafka.sampleapp.person.consumer;
+package org.tnmk.kafka.sampleapp.person.consumer.listener;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.slf4j.Logger;
@@ -11,6 +11,8 @@ import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
+import org.tnmk.kafka.sampleapp.person.consumer.PersonConsumerConfig;
+import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleService;
 
 
 /**
@@ -24,7 +26,7 @@ public class PersonAutoAckListenerErrorHandler implements ConsumerAwareListenerE
     public static Logger LOGGER = LoggerFactory.getLogger(PersonConsumerConfig.class);
 
     @Autowired
-    private PersonActionsAcknowledgement personActionsAcknowledgement;
+    private PersonConsumerSampleService personConsumerSampleService;
 
     /**
      * @see KafkaListenerErrorHandler
@@ -40,8 +42,8 @@ public class PersonAutoAckListenerErrorHandler implements ConsumerAwareListenerE
                 "\n\tConsumer Assignment: {}"+
                 "\n\tData: {}." +
                 "\n\tException: {}",consumer.assignment(), message, exception.getMessage(), exception);
-        personActionsAcknowledgement.autoAckError();
-        personActionsAcknowledgement.autoAckErrorAtOffset(offset);
+        personConsumerSampleService.autoAckError();
+        personConsumerSampleService.autoAckErrorAtOffset(offset);
         return null;
     }
 }

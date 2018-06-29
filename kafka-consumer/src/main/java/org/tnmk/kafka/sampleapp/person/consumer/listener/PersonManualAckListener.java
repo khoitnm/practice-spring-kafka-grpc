@@ -1,4 +1,4 @@
-package org.tnmk.kafka.sampleapp.person.consumer;
+package org.tnmk.kafka.sampleapp.person.consumer.listener;
 
 import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.slf4j.Logger;
@@ -13,6 +13,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
+import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleService;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * For some reason, the manual acknowledge doesn't work???
@@ -21,10 +24,10 @@ import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
 @Service
 public class PersonManualAckListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PersonManualAckListener.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
-    private PersonActionsAcknowledgement personActionsAcknowledgement;
+    private PersonConsumerSampleService personConsumerSampleService;
 
     //Note: this groupId is different from PersonAutoAckListener
     @KafkaListener(id = "personManualAckListener", groupId = "personManualAckGroup", topics = "${app.topic.example}",
@@ -37,7 +40,7 @@ public class PersonManualAckListener {
             //We do this to test the Error Handler
             throw new IllegalArgumentException("The real name must be not empty: " + data);
         } else {
-            personActionsAcknowledgement.manualAck(data);
+            personConsumerSampleService.manualAck(data);
         }
         // Note: Even if the don't call acknowledge(), the Listener still continue processing the next item. It doesn't stuck here.
         // However, when we restart the application, it will replay old records which are not acknowledged yet.

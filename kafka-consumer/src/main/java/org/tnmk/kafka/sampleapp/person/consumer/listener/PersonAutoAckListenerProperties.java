@@ -1,4 +1,4 @@
-package org.tnmk.kafka.sampleapp.person.consumer;
+package org.tnmk.kafka.sampleapp.person.consumer.listener;
 
 import org.tnmk.common.kafka.consumer.KafkaListenerContainerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
