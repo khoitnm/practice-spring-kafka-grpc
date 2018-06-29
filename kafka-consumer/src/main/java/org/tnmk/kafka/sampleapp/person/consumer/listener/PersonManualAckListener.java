@@ -15,6 +15,8 @@ import org.springframework.util.StringUtils;
 import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
 import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleService;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * For some reason, the manual acknowledge doesn't work???
  * https://stackoverflow.com/questions/41497790/cannot-disable-manual-commits-on-kafka-message-using-spring-integration-kafka-in
@@ -22,7 +24,7 @@ import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleSer
 @Service
 public class PersonManualAckListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PersonManualAckListener.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     private PersonConsumerSampleService personConsumerSampleService;
