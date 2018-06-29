@@ -16,31 +16,31 @@ public class PersonConsumerSampleServiceImpl implements PersonConsumerSampleServ
 
     @Override
     public void autoAck(Person person) {
-
+        logger.info("autoAck: {}", person);
     }
 
     @Override
     public void manualAck(Person person) {
-
+        logger.info("manualAck: {}", person);
     }
 
     @Override
     public void autoAckError() {
-
+        logger.info("autoAckError");
     }
 
     @Override
     public void autoAckErrorAtOffset(long offset) {
-
+        logger.info("autoAckErrorAtOffset: {}", offset);
     }
 
     @Override
     public void manualAckError() {
-
+        logger.info("manualAckError");
     }
 
     @Override
     public void manualAckErrorAtOffset(long offset) {
-
+        logger.info("manualAckErrorAtOffset: {}", offset);
     }
 }
