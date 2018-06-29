@@ -1,4 +1,4 @@
-package org.tnmk.kafka.sampleapp.person.consumer;
+package org.tnmk.kafka.sampleapp.person.consumer.usecases;
 
 
 import com.leonardo.monalisa.common.message.protobuf.Person;
@@ -6,7 +6,7 @@ import com.leonardo.monalisa.common.message.protobuf.Person;
 /**
  * In this consumer package, there's no implementation class for this interface because it will be mocked.
  */
-public interface PersonSampleService {
+public interface PersonConsumerSampleService {
     void autoAck(Person person);
 
     void manualAck(Person person);

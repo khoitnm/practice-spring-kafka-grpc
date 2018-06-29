@@ -8,6 +8,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.tnmk.common.kafka.consumer.KafkaListenerContainerFactoryConstructor;
 import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
+import org.tnmk.kafka.sampleapp.person.consumer.listener.PersonAutoAckListenerProperties;
+import org.tnmk.kafka.sampleapp.person.consumer.listener.PersonManualAckListenerProperties;
 
 @Configuration
 @EnableKafka //@EnableKafka is used to enable detection of @KafkaListener annotation.

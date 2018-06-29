@@ -10,9 +10,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonProducerService {
+public class PersonProducer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PersonProducerService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PersonProducer.class);
 
     @Autowired
     private KafkaTemplate<String, GeneratedMessageV3> kafkaTemplate;

@@ -1,4 +1,4 @@
-package org.tnmk.kafka.sampleapp.person.consumer;
+package org.tnmk.kafka.sampleapp.person.consumer.listener;
 
 import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.tnmk.common.kafka.serialization.protobuf.DeserializedRecord;
+import org.tnmk.kafka.sampleapp.person.consumer.usecases.PersonConsumerSampleService;
 
 @Service
 public class PersonAutoAckListener {
@@ -19,7 +20,7 @@ public class PersonAutoAckListener {
     private static final Logger LOG = LoggerFactory.getLogger(PersonAutoAckListener.class);
 
     @Autowired
-    private PersonSampleService personSampleService;
+    private PersonConsumerSampleService personConsumerSampleService;
 
     @KafkaListener(id = "personAutoAckListener",groupId = "personAutoAckGroup", topics = "${app.topic.example}",
             containerFactory = "personAutoAckListenerContainerFactory", errorHandler = "personErrorHandler")
@@ -30,7 +31,7 @@ public class PersonAutoAckListener {
             //We do this to test the Error Handler
             throw new IllegalArgumentException("The real name must be not empty: "+data);
         } else {
-            personSampleService.autoAck(data);
+            personConsumerSampleService.autoAck(data);
         }
     }
 
