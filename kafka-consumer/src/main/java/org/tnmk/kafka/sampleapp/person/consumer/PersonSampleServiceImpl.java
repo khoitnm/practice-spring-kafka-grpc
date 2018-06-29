@@ -4,7 +4,7 @@ import com.leonardo.monalisa.common.message.protobuf.Person;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonActionsAcknowledgementImpl implements PersonActionsAcknowledgement {
+public class PersonSampleServiceImpl implements PersonSampleService {
     @Override
     public void autoAck(Person person) {
 

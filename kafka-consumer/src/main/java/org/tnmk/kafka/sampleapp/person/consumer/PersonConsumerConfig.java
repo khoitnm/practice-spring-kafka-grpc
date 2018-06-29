@@ -12,15 +12,6 @@ import org.tnmk.common.kafka.serialization.protobuf.ProtobufDeserializer;
 @Configuration
 @EnableKafka //@EnableKafka is used to enable detection of @KafkaListener annotation.
 public class PersonConsumerConfig {
-//    /**
-//     * We want a mock instance so that we can verify whether the method {@link PersonActionsAcknowledgement#autoAck(Person)} is processed or not.
-//     * @return
-//     */
-//    @Bean
-//    public PersonActionsAcknowledgement personRepository() {
-//        return Mockito.mock(PersonActionsAcknowledgement.class);
-//    }
-
     //AUTO ACKNOWLEDGE LISTENER /////////////////////////////////////////////////////////////////////////////
     /**
      * All the properties values of this bean was loaded from *.yml file.

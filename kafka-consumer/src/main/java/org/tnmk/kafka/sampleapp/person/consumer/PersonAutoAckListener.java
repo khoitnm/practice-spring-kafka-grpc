@@ -19,7 +19,7 @@ public class PersonAutoAckListener {
     private static final Logger LOG = LoggerFactory.getLogger(PersonAutoAckListener.class);
 
     @Autowired
-    private PersonActionsAcknowledgement personActionsAcknowledgement;
+    private PersonSampleService personSampleService;
 
     @KafkaListener(id = "personAutoAckListener",groupId = "personAutoAckGroup", topics = "${app.topic.example}",
             containerFactory = "personAutoAckListenerContainerFactory", errorHandler = "personErrorHandler")
@@ -30,7 +30,7 @@ public class PersonAutoAckListener {
             //We do this to test the Error Handler
             throw new IllegalArgumentException("The real name must be not empty: "+data);
         } else {
-            personActionsAcknowledgement.autoAck(data);
+            personSampleService.autoAck(data);
         }
     }
 

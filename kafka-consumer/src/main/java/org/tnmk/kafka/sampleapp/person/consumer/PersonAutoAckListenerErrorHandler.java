@@ -24,7 +24,7 @@ public class PersonAutoAckListenerErrorHandler implements ConsumerAwareListenerE
     public static Logger LOGGER = LoggerFactory.getLogger(PersonConsumerConfig.class);
 
     @Autowired
-    private PersonActionsAcknowledgement personActionsAcknowledgement;
+    private PersonSampleService personSampleService;
 
     /**
      * @see KafkaListenerErrorHandler
@@ -40,8 +40,8 @@ public class PersonAutoAckListenerErrorHandler implements ConsumerAwareListenerE
                 "\n\tConsumer Assignment: {}"+
                 "\n\tData: {}." +
                 "\n\tException: {}",consumer.assignment(), message, exception.getMessage(), exception);
-        personActionsAcknowledgement.autoAckError();
-        personActionsAcknowledgement.autoAckErrorAtOffset(offset);
+        personSampleService.autoAckError();
+        personSampleService.autoAckErrorAtOffset(offset);
         return null;
     }
 }

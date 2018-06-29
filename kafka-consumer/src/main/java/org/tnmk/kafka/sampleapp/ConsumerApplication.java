@@ -9,10 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConsumerApplication {
 
-    /**
-     * This method just to show you an example how to do it in a real application. In this testing context, it do nothing!!!
-     * @param args
-     */
     @SuppressWarnings("resource")
     public static void main(final String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);

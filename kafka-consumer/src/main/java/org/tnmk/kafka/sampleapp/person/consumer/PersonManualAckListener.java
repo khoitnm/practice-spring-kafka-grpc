@@ -24,7 +24,7 @@ public class PersonManualAckListener {
     private static final Logger LOG = LoggerFactory.getLogger(PersonManualAckListener.class);
 
     @Autowired
-    private PersonActionsAcknowledgement personActionsAcknowledgement;
+    private PersonSampleService personSampleService;
 
     //Note: this groupId is different from PersonAutoAckListener
     @KafkaListener(id = "personManualAckListener", groupId = "personManualAckGroup", topics = "${app.topic.example}",
@@ -37,7 +37,7 @@ public class PersonManualAckListener {
             //We do this to test the Error Handler
             throw new IllegalArgumentException("The real name must be not empty: " + data);
         } else {
-            personActionsAcknowledgement.manualAck(data);
+            personSampleService.manualAck(data);
         }
         // Note: Even if the don't call acknowledge(), the Listener still continue processing the next item. It doesn't stuck here.
         // However, when we restart the application, it will replay old records which are not acknowledged yet.
