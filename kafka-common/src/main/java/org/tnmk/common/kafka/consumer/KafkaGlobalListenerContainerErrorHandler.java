@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
  * @return
  * @see SeekToCurrentErrorHandler
  */
-public class KafkaGlobalContainerErrorHandler implements ContainerAwareErrorHandler {
-    public static Logger LOGGER = LoggerFactory.getLogger(KafkaGlobalContainerErrorHandler.class);
+public class KafkaGlobalListenerContainerErrorHandler implements ContainerAwareErrorHandler {
+    public static Logger LOGGER = LoggerFactory.getLogger(KafkaGlobalListenerContainerErrorHandler.class);
 
 
     private ErrorHandler nestedErrorHandler;
 
-    public KafkaGlobalContainerErrorHandler(){
+    public KafkaGlobalListenerContainerErrorHandler(){
         //Default constructor
     }
-    public KafkaGlobalContainerErrorHandler(ErrorHandler nestedErrorHandler) {
+    public KafkaGlobalListenerContainerErrorHandler(ErrorHandler nestedErrorHandler) {
         this.nestedErrorHandler = nestedErrorHandler;
     }
 
@@ -48,6 +48,8 @@ public class KafkaGlobalContainerErrorHandler implements ContainerAwareErrorHand
         //Option 2: log the error offset, store it somewhere, and advance to next record in partitions.
         advanceToNextRecord(consumer);
 
+        //Option 3: Just write log and do nothing else.
+
         if (nestedErrorHandler != null){
             nestedErrorHandler.handle(thrownException, records, consumer, container);
         }
@@ -57,10 +59,12 @@ public class KafkaGlobalContainerErrorHandler implements ContainerAwareErrorHand
      * Advance the next record but don't acknowledge it.
      * If you restart the consumer when there's no newer acknowledged records, it could be replayed if the ack-on-error is false or the ack-mode is MANUAL).
      * @param consumer
+     * @deprecated the solution is not good.
      */
+    @Deprecated
     private void advanceToNextRecord(Consumer consumer){
         Set<TopicPartition> assignment = consumer.assignment();
-        // Each consumer only handles one partition for each topic, so it looks OK.
+        // FIXME a consumer may have to handle many partitions of a topic, so this may not a good idea!
         // We may not need to worry about handling records in non-error partitions.
         assignment.forEach(topicPartition -> {
             advanceToNextRecord(consumer, topicPartition);
