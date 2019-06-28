@@ -19,8 +19,8 @@ public class GlobalKafkaConsumerInitiation {
     private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
     /**
-     * We cannot use @PostConstruct here because sometimes Spring invokes this method too soon.
-     * It could be invoked before the application binds to Kafka.
+     * We cannot use @PostConstruct here because sometimes Spring invokes this method too soon when the application doesn't bind to Kafka yet.
+     * That's why we have to use {@link EventListener}.
      */
     @EventListener(ApplicationReadyEvent.class)
     public void startAllConsumers() {
