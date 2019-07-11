@@ -1,0 +1,4 @@
+#server.port: ${port:8083}
+#
+#kafka-global-producer:
+#  bootstrap-servers: ${spring.embedded.kafka.brokers}
