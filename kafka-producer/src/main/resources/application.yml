@@ -4,4 +4,13 @@ kafka-global-producer:
 
 app:
   topic:
-    example: topic.01
+    example: topic_01
+
+kafka:
+  topics:
+    topic_01:
+      numPartitions: 3
+      replicationFactor: 2
+    topic_02:
+      numPartitions: 4
+      replicationFactor: 2
