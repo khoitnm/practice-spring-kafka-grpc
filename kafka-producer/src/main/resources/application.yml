@@ -2,15 +2,13 @@ server.port: ${port:8080}
 kafka-global-producer:
   bootstrap-servers: localhost:9092
 
-app:
-  topic:
-    example: topic_01
-
 kafka:
   topics:
     topic_01:
+      name: 'topic.01.aaa'
       numPartitions: 3
-      replicationFactor: 2
+      replicationFactor: 1
     topic_02:
+      name: 'topic.02.bbb'
       numPartitions: 4
-      replicationFactor: 2
+      replicationFactor: 1

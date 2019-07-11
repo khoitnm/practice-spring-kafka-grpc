@@ -17,10 +17,11 @@ public class PersonProducerService {
     @Autowired
     private KafkaTemplate<String, GeneratedMessageV3> kafkaTemplate;
 
-    @Value("${app.topic.example}")
-    private String topic;
+    @Autowired
+    private TopicsProperties topicsProperties;
 
     public void send(Person data){
+        String topic = topicsProperties.getTopics().get(TopicsProperties.TOPIC_KEY_01).getName();
         LOG.info("sending data='{}' to topic='{}'", data, topic);
 
         kafkaTemplate.send(topic, data);
