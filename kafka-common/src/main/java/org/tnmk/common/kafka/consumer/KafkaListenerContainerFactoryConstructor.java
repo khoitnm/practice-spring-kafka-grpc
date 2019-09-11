@@ -49,14 +49,14 @@ public class KafkaListenerContainerFactoryConstructor<T extends GeneratedMessage
         applyRetryConfiguration(containerFactory, kafkaListenerContainerProperties);
 
         //Always need a default wrapper to prevent endless loop when there's error in Deserialization.
-        containerFactory.getContainerProperties().setErrorHandler(new KafkaGlobalListenerContainerErrorHandler());
+        containerFactory.setErrorHandler(new KafkaGlobalListenerContainerErrorHandler());
         return containerFactory;
     }
 
     public void applyErrorHandler(ConcurrentKafkaListenerContainerFactory<String, T> listenerContainerFactory, ErrorHandler errorHandler) {
         if (errorHandler != null) {
             //Always need a default wrapper to prevent endless loop when there's error in Deserialization.
-            listenerContainerFactory.getContainerProperties().setErrorHandler(new KafkaGlobalListenerContainerErrorHandler(errorHandler));
+            listenerContainerFactory.setErrorHandler(new KafkaGlobalListenerContainerErrorHandler(errorHandler));
         }
     }
 

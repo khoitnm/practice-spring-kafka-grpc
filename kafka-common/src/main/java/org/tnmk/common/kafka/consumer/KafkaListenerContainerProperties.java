@@ -1,12 +1,11 @@
 package org.tnmk.common.kafka.consumer;
 
-import org.tnmk.common.kafka.KafkaConnectibleProperties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.listener.AbstractMessageListenerContainer;
-import org.springframework.kafka.listener.config.ContainerProperties;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
+import org.tnmk.common.kafka.KafkaConnectibleProperties;
 
 /**
  * This is the Properties for each Consumer.
@@ -57,7 +56,7 @@ public class KafkaListenerContainerProperties implements KafkaConnectiblePropert
     /**
      * We are using the default value of {@link ContainerProperties#ackMode}
      */
-    private AbstractMessageListenerContainer.AckMode ackMode = AbstractMessageListenerContainer.AckMode.BATCH;
+    private ContainerProperties.AckMode ackMode = ContainerProperties.AckMode.BATCH;
 
     /**
      * The configuration controls the maximum amount of time the client will wait for the response of a request.
@@ -118,11 +117,11 @@ public class KafkaListenerContainerProperties implements KafkaConnectiblePropert
         this.autoStartup = autoStartup;
     }
 
-    public AbstractMessageListenerContainer.AckMode getAckMode() {
+    public ContainerProperties.AckMode getAckMode() {
         return ackMode;
     }
 
-    public void setAckMode(AbstractMessageListenerContainer.AckMode ackMode) {
+    public void setAckMode(ContainerProperties.AckMode ackMode) {
         this.ackMode = ackMode;
     }
 
