@@ -13,7 +13,7 @@
 
     <parent>
         <groupId>org.tnmk.skeleton</groupId>
-        <artifactId>practice-spring-kafka-grpc</artifactId>
+        <artifactId>pro-00-spring-boot-2-0-3</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
