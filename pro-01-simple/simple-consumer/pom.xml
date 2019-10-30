@@ -9,8 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.tnmk.skeleton</groupId>
+    <groupId>org.tnmk.skeleton.pro-01-simple</groupId>
     <artifactId>simple-consumer</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
 
 </project>
