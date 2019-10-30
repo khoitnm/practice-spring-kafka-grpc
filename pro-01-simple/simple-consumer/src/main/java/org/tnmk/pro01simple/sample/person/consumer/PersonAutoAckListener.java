@@ -24,6 +24,6 @@ public class PersonAutoAckListener {
 
     private void logReceiveData(Person data, MessageHeaders headers){
         Long offset = (Long)headers.get(KafkaHeaders.OFFSET);
-        logger.info("[AUTO-ACK]received record[{}]='{}'",offset, data);
+        logger.info("[KAFKA LISTENER]received record[{}]='{}'",offset, data);
     }
 }
