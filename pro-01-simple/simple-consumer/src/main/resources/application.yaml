@@ -1,0 +1,9 @@
+server:
+  port: 8081
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.tnmk.pro01simple.common.kafka.serialization.protobuf.ProtobufDeserializer
