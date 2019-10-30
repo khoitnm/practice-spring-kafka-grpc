@@ -22,4 +22,11 @@ public class KafkaListenerConfigHelper {
                 new ProtobufDeserializer<T>(messageClass));
     }
 
+    public static <T extends GeneratedMessageV3> ConcurrentKafkaListenerContainerFactory<String, DeserializedRecord<T>> createListenerContainerFactory(ConsumerFactory originalConsumerFactory, Class<T> messageClass){
+        ConcurrentKafkaListenerContainerFactory<String, DeserializedRecord<T>> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConsumerFactory consumerFactory = KafkaListenerConfigHelper.createConsumerFactory(originalConsumerFactory, messageClass);
+        factory.setConsumerFactory(consumerFactory);
+        return factory;
+    }
+
 }

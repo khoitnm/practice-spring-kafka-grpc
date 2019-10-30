@@ -9,26 +9,15 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.tnmk.pro01simple.common.kafka.consumer.KafkaListenerConfigHelper;
+import org.tnmk.pro01simple.common.kafka.serialization.protobuf.DeserializedRecord;
 
 @Configuration
 @EnableKafka
 public class KafkaListenerConfig {
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Person> kafkaListenerContainerFactory(@Autowired ConsumerFactory originalConsumerFactory) {
-        ConcurrentKafkaListenerContainerFactory<String, Person> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        ConsumerFactory consumerFactory = KafkaListenerConfigHelper.createConsumerFactory(originalConsumerFactory, Person.class);
-        factory.setConsumerFactory(consumerFactory);
+    public ConcurrentKafkaListenerContainerFactory<String, DeserializedRecord<Person>> kafkaListenerContainerFactory(@Autowired ConsumerFactory originalConsumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, DeserializedRecord<Person>> factory = KafkaListenerConfigHelper.createListenerContainerFactory(originalConsumerFactory, Person.class);
         return factory;
     }
-
-//    @Bean
-//    public ConcurrentKafkaListenerContainerFactory<String, Person> kafkaListenerContainerFactory(@Autowired ConcurrentKafkaListenerContainerFactory originalKafkaListenerContainerFactory) {
-//        ConsumerFactory consumerFactory = KafkaListenerConfigHelper.createConsumerFactory(originalKafkaListenerContainerFactory.getConsumerFactory(), Person.class);
-//
-//        ConcurrentKafkaListenerContainerFactory<String, Person> factory = new ConcurrentKafkaListenerContainerFactory<>();
-////        BeanUtils.copyProperties(originalKafkaListenerContainerFactory, factory);
-//        factory.setConsumerFactory(consumerFactory);
-//        return factory;
-//    }
 }
