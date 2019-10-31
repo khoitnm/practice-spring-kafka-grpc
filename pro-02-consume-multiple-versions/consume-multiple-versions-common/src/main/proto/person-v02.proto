@@ -3,7 +3,9 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "org.tnmk.practicespringkafkagrpc.common.message.protobuf";
 
-message Person {
-    string realName = 1;
+message PersonV02Proto {
+//    string realName = 1;
     string nickName = 2;
+    string firstName = 3;
+    string lastName = 4;
 }

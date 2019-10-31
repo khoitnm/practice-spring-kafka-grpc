@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.tnmk.practicespringkafkagrpc.common.message.protobuf";
+
+import "person-v01.proto";
+import "person-v02.proto";
+
+message EventProto {
+    EntityTypeProto entityType = 1;
+
+    oneof entity {
+        PersonV01Proto personV01 = 2;
+        PersonV02Proto personV02 = 3;
+    }
+}
+
+enum EntityTypeProto {
+    ENTITY_TYPE_PERSON_V01 = 0;
+    ENTITY_TYPE_PERSON_V02 = 1;
+}

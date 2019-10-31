@@ -1,35 +1,35 @@
 package org.tnmk.pro02consumemultipleversions.sample.person;
 
-import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
-import org.tnmk.practicespringkafkagrpc.common.message.protobuf.PersonV2;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.PersonV01Proto;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.PersonV02Proto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.tnmk.pro02consumemultipleversions.sample.person.producer.PersonProducer;
-import org.tnmk.pro02consumemultipleversions.sample.person.producer.PersonV2Producer;
+import org.tnmk.pro02consumemultipleversions.sample.person.producer.PersonV01Producer;
+import org.tnmk.pro02consumemultipleversions.sample.person.producer.PersonV02Producer;
 
 @Service
 public class Initiation {
 
     @Autowired
-    private PersonProducer personProducer;
+    private PersonV01Producer personV01Producer;
     @Autowired
-    private PersonV2Producer personV2Producer;
+    private PersonV02Producer personV02Producer;
 
     @EventListener(ApplicationReadyEvent.class)
     public void init(){
-        Person person = Person.newBuilder()
+        PersonV01Proto person = PersonV01Proto.newBuilder()
             .setNickName("PersonV1_"+System.nanoTime())
             .setRealName("RealName_"+System.nanoTime())
             .build();
-        personProducer.send(person);
+        personV01Producer.send(person);
 
-        PersonV2 personV2 = PersonV2.newBuilder()
-            .setNickName("PersonV2_"+System.nanoTime())
+        PersonV02Proto personV2 = PersonV02Proto.newBuilder()
+            .setNickName("PersonV02_"+System.nanoTime())
             .setFirstName("FirstName_"+System.nanoTime())
             .setLastName("LastName_"+System.nanoTime())
             .build();
-        personV2Producer.send(personV2);
+        personV02Producer.send(personV2);
     }
 }

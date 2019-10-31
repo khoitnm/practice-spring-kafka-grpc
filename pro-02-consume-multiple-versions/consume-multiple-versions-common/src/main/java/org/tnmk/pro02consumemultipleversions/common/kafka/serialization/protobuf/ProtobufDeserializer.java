@@ -2,7 +2,7 @@ package org.tnmk.pro02consumemultipleversions.common.kafka.serialization.protobu
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Parser;
-import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.PersonV01Proto;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -63,7 +63,7 @@ public class ProtobufDeserializer<T extends GeneratedMessageV3> implements Deser
         result.setOriginalBytes(data);
         try {
             T deseralizedData = parser.parseFrom(data);
-            Person person = (Person) deseralizedData;
+            PersonV01Proto person = (PersonV01Proto) deseralizedData;
             //FIXME Just used to test the error case inside the Deserialization.
             if (person.getRealName().contains("DeErr")){
                 throw new RuntimeException("Deserialization Error Intently");
