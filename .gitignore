@@ -1,8 +1,19 @@
+!.gitignore
+
 #Project Management Tools
 .idea
 .mvn
+.gradle
 
 #Project structure
-target
 *.log
-
+**/*.iml
+**/*.project
+**/*.settings
+**/*.classpath
+**/target
+**/build
+**/*.tern-project
+build.properties
+*.log
+.sonar

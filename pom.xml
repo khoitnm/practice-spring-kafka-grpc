@@ -12,6 +12,7 @@
     <modules>
         <module>pro-00-spring-boot-2-0-3</module>
         <module>pro-01-simple</module>
+        <module>pro-02-consume-multiple-versions</module>
     </modules>
 
     <properties>
