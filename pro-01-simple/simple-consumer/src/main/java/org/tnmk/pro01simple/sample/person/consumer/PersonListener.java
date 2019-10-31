@@ -1,6 +1,6 @@
 package org.tnmk.pro01simple.sample.person.consumer;
 
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;

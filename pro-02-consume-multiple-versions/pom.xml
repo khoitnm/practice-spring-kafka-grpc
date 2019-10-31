@@ -16,9 +16,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>simple-common</module>
-        <module>simple-consumer</module>
-        <module>simple-producer</module>
+        <module>consume-multiple-versions-common</module>
+        <module>consume-multiple-versions-consumer</module>
+        <module>consume-multiple-versions-producer</module>
     </modules>
 
     <properties>

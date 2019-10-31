@@ -1,6 +1,6 @@
 package org.tnmk.kafka.sampleapp.person;
 
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

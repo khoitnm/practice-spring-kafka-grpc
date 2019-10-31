@@ -1,7 +1,7 @@
 package org.tnmk.pro01simple.common.kafka.consumer;
 
 import com.google.protobuf.GeneratedMessageV3;
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

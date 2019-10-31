@@ -6,7 +6,7 @@ import org.apache.kafka.common.header.Headers;
  * At this moment, Spring Kafka can help us to get message headers when success.
  * But when there's error (e.g. Deserialization is corrupted), so it would be helpful to return the failed record with headers and exception.
  *
- * @Note We may not need this class to prevent endless loop in consumer because the {@link com.leonardo.monalisa.common.kafka.consumer.KafkaGlobalContainerErrorHandler} will be automatically registered into KafkaListenerContainer (view more in the code {@link com.leonardo.monalisa.common.kafka.consumer.KafkaListenerContainerFactoryConstructor}).
+ * @Note We may not need this class to prevent endless loop in consumer because the {@link org.tnmk.practicespringkafkagrpc.common.kafka.consumer.KafkaGlobalContainerErrorHandler} will be automatically registered into KafkaListenerContainer (view more in the code {@link org.tnmk.practicespringkafkagrpc.common.kafka.consumer.KafkaListenerContainerFactoryConstructor}).
  * However, I think it will give use more convenient way to handle CorruptedDeserialization.
  * @param <T>
  */

@@ -1,6 +1,6 @@
 package org.tnmk.pro01simple.sample.person.consumer;
 
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,7 @@
 package org.tnmk.kafka.sampleapp.person.producer;
 
 import com.google.protobuf.GeneratedMessageV3;
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

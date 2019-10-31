@@ -1,1 +1,1 @@
-SampleApp: This package provides an example how to use the com.leonardo.monalisa.common.kafka package.
+SampleApp: This package provides an example how to use the org.tnmk.practicespringkafkagrpc.common.kafka package.

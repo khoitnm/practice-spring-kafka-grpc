@@ -1,7 +1,7 @@
 package org.tnmk.kafka.sampleapp.person.consumer.usecases;
 
 
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 
 /**
  * In this consumer package, there's no implementation class for this interface because it will be mocked.

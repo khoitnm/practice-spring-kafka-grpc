@@ -2,7 +2,7 @@ package org.tnmk.pro01simple.common.kafka.serialization.protobuf;
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Parser;
-import com.leonardo.monalisa.common.message.protobuf.Person;
+import org.tnmk.practicespringkafkagrpc.common.message.protobuf.Person;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
