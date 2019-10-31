@@ -3,6 +3,9 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "org.tnmk.practicespringkafkagrpc.common.message.protobuf";
 
+/**
+ * The version number doesn't need to match the jar file's version (dependency's version) because sometimes, if we add a new fields into a Proto message, we don't need to change the class name (don't need to increase the version in the class name) but we always need to increase the jar's version.
+ */
 message PersonV01Proto {
     string realName = 1;
     string nickName = 2;
